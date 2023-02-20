@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE5224AA29A431FC00AD6028 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5224A929A431FC00AD6028 /* LoginController.swift */; };
+		FE5224AC29A432A200AD6028 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5224AB29A432A200AD6028 /* RegistrationController.swift */; };
 		FE9717112998C29500C4C4E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9717102998C29500C4C4E1 /* AppDelegate.swift */; };
 		FE9717132998C29500C4C4E1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9717122998C29500C4C4E1 /* SceneDelegate.swift */; };
 		FE9717182998C29500C4C4E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE9717162998C29500C4C4E1 /* Main.storyboard */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FE5224A929A431FC00AD6028 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		FE5224AB29A432A200AD6028 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		FE97170D2998C29500C4C4E1 /* TwiterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwiterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE9717102998C29500C4C4E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FE9717122998C29500C4C4E1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FE5224A829A431E300AD6028 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				FE5224A929A431FC00AD6028 /* LoginController.swift */,
+				FE5224AB29A432A200AD6028 /* RegistrationController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		FE9717042998C29500C4C4E1 = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +176,7 @@
 		FE9717442998C33D00C4C4E1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				FE5224A829A431E300AD6028 /* Authentication */,
 				FE9717482998C49F00C4C4E1 /* MainTabController.swift */,
 				FE97174A2998C71100C4C4E1 /* FeedController.swift */,
 				FE97174C2998C75300C4C4E1 /* NotificationController.swift */,
@@ -329,6 +343,8 @@
 				FE97174D2998C75300C4C4E1 /* NotificationController.swift in Sources */,
 				FE9717112998C29500C4C4E1 /* AppDelegate.swift in Sources */,
 				FE9717132998C29500C4C4E1 /* SceneDelegate.swift in Sources */,
+				FE5224AA29A431FC00AD6028 /* LoginController.swift in Sources */,
+				FE5224AC29A432A200AD6028 /* RegistrationController.swift in Sources */,
 				FE9717492998C49F00C4C4E1 /* MainTabController.swift in Sources */,
 				FE97174B2998C71100C4C4E1 /* FeedController.swift in Sources */,
 				FE9717512998C78100C4C4E1 /* ConversationController.swift in Sources */,
