@@ -34,6 +34,7 @@ class LoginController : UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         view.addSubview(logoImageView)
-        view.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor)
+        logoImageView.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor)
+        logoImageView.setDimensions(width: 150, height: 150)
     }
 }
