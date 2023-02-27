@@ -8,9 +8,9 @@
 import UIKit
 
 class ExploreController: UIViewController {
-    // Mark: - Properties
+    // MARK: - Properties
     
-    // Mark: - LifeCycle
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -18,7 +18,7 @@ class ExploreController: UIViewController {
     }
     
     
-    // Mark: - Helpers
+    // MARK: - Helpers
     func configureUI() {
         view.backgroundColor = .white
         

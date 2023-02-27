@@ -8,9 +8,9 @@
 import UIKit
 
 class ConversationsController: UIViewController {
-    // Mark: - Properties
+    // MARK: - Properties
     
-    // Mark: - LifeCycle
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,7 +18,7 @@ class ConversationsController: UIViewController {
     }
     
     
-    // Mark: - Helpers
+    // MARK: - Helpers
     func configureUI() {
         view.backgroundColor = .white
         

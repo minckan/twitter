@@ -8,9 +8,9 @@
 import UIKit
 
 class FeedController: UIViewController {
-    // Mark: - Properties
+    // MARK: - Properties
     
-    // Mark: - LifeCycle
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,7 +18,7 @@ class FeedController: UIViewController {
     }
     
     
-    // Mark: - Helpers
+    // MARK: - Helpers
     func configureUI() {
         view.backgroundColor = .white
         
