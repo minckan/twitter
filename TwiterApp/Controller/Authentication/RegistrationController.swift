@@ -125,7 +125,18 @@ class RegistrationController : UIViewController {
             
             self.dismiss(animated: true)
         }
-        
+
+            
+            guard let uid = result?.user.uid else {return}
+            let values = ["email": email, "username": username, "fullname": fullname]
+            
+            let ref = Database.database().reference().child("users").child(uid)
+            
+            ref.updateChildValues(values) { error, ref in
+                print("DEBUG: Successfully updated user information...")
+            }
+        }
+                
 
     }
     

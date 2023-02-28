@@ -113,3 +113,7 @@ iOSInjectionProject/
 
 #Firebase
 GoogleService-Info.plist
+
+
+#
+.DS_Store
