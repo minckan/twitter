@@ -7,12 +7,14 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class RegistrationController : UIViewController {
 
     // MARK: - Properties
     
     private let imagePicker = UIImagePickerController()
+    private var profileImage: UIImage?
     
     private let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -103,8 +105,15 @@ class RegistrationController : UIViewController {
     }
     
     @objc func handleRegistration() {
+        guard let profileImage = profileImage else {
+            print("DEBUG: please selecr a profile image...")
+            return
+        }
+
         guard let email = emailTextField.text else {return}
         guard let password = passwordTextField.text else {return}
+        guard let fullname = fullNameTextField.text else {return}
+        guard let username = usernameTextField .text else {return}
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             if let error = error {
@@ -112,7 +121,14 @@ class RegistrationController : UIViewController {
                 return
             }
             
-            print("DEBUG: Successfully registered user.")
+            guard let uid = result?.user.uid else {return}
+            let values = ["email": email, "username": username, "fullname": fullname]
+            
+            let ref = Database.database().reference().child("users").child(uid)
+            
+            ref.updateChildValues(values) { error, ref in
+                print("DEBUG: Successfully updated user information...")
+            }
         }
         
         
@@ -155,6 +171,7 @@ class RegistrationController : UIViewController {
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else {return}
+        self.profileImage = profileImage
         
         //
         plusPhotoButton.layer.cornerRadius = 128 / 2
