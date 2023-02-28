@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4E3D90CC104A375E46F53B82 /* Pods_TwiterApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B04EFA2AD620AF634E4DAF84 /* Pods_TwiterApp.framework */; };
+		FE2D874C29ADF26900818050 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2D874B29ADF26900818050 /* AuthService.swift */; };
 		FE320A0829AC9522004571A9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320A0729AC9522004571A9 /* Utilities.swift */; };
 		FE320A0A29ACBEE8004571A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE320A0929ACBEE8004571A9 /* GoogleService-Info.plist */; };
 		FE320A0C29ADDA88004571A9 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320A0B29ADDA88004571A9 /* Constant.swift */; };
@@ -51,6 +52,7 @@
 		0E677BBF7DE42DBB51CD732B /* Pods-TwiterApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwiterApp.release.xcconfig"; path = "Target Support Files/Pods-TwiterApp/Pods-TwiterApp.release.xcconfig"; sourceTree = "<group>"; };
 		5308251790CCE4ADD559D977 /* Pods-TwiterApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwiterApp.debug.xcconfig"; path = "Target Support Files/Pods-TwiterApp/Pods-TwiterApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B04EFA2AD620AF634E4DAF84 /* Pods_TwiterApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwiterApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE2D874B29ADF26900818050 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FE320A0729AC9522004571A9 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		FE320A0929ACBEE8004571A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		FE320A0B29ADDA88004571A9 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 		FE9717412998C32700C4C4E1 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				FE2D874B29ADF26900818050 /* AuthService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				FE97174B2998C71100C4C4E1 /* FeedController.swift in Sources */,
 				FE9717512998C78100C4C4E1 /* ConversationController.swift in Sources */,
 				FE97174F2998C76A00C4C4E1 /* ExploreController.swift in Sources */,
+				FE2D874C29ADF26900818050 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
