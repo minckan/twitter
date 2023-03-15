@@ -15,6 +15,7 @@
 		FE320A0A29ACBEE8004571A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE320A0929ACBEE8004571A9 /* GoogleService-Info.plist */; };
 		FE320A0C29ADDA88004571A9 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320A0B29ADDA88004571A9 /* Constant.swift */; };
 		FE497DC529C207A6004FDC77 /* UploadTweetsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE497DC429C207A6004FDC77 /* UploadTweetsController.swift */; };
+		FE497DC729C20F23004FDC77 /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE497DC629C20F23004FDC77 /* CaptionTextView.swift */; };
 		FE5224AA29A431FC00AD6028 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5224A929A431FC00AD6028 /* LoginController.swift */; };
 		FE5224AC29A432A200AD6028 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5224AB29A432A200AD6028 /* RegistrationController.swift */; };
 		FE9717112998C29500C4C4E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9717102998C29500C4C4E1 /* AppDelegate.swift */; };
@@ -62,6 +63,7 @@
 		FE320A0929ACBEE8004571A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		FE320A0B29ADDA88004571A9 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		FE497DC429C207A6004FDC77 /* UploadTweetsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetsController.swift; sourceTree = "<group>"; };
+		FE497DC629C20F23004FDC77 /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextView.swift; sourceTree = "<group>"; };
 		FE5224A929A431FC00AD6028 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		FE5224AB29A432A200AD6028 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		FE97170D2998C29500C4C4E1 /* TwiterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwiterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,6 +242,7 @@
 		FE9717462998C34200C4C4E1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FE497DC629C20F23004FDC77 /* CaptionTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				FE497DC529C207A6004FDC77 /* UploadTweetsController.swift in Sources */,
 				FE9717112998C29500C4C4E1 /* AppDelegate.swift in Sources */,
 				FE2D875029AE2BCB00818050 /* User.swift in Sources */,
+				FE497DC729C20F23004FDC77 /* CaptionTextView.swift in Sources */,
 				FE9717132998C29500C4C4E1 /* SceneDelegate.swift in Sources */,
 				FE5224AA29A431FC00AD6028 /* LoginController.swift in Sources */,
 				FE320A0829AC9522004571A9 /* Utilities.swift in Sources */,
