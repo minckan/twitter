@@ -32,6 +32,7 @@
 		FE9717512998C78100C4C4E1 /* ConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9717502998C78100C4C4E1 /* ConversationController.swift */; };
 		FE9717532998ECCB00C4C4E1 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9717522998ECCB00C4C4E1 /* Common.swift */; };
 		FE97175529A2332600C4C4E1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE97175429A2332600C4C4E1 /* Extensions.swift */; };
+		FE9C797829C3647C0076DFB9 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9C797729C3647C0076DFB9 /* TweetCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		FE9717502998C78100C4C4E1 /* ConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationController.swift; sourceTree = "<group>"; };
 		FE9717522998ECCB00C4C4E1 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		FE97175429A2332600C4C4E1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		FE9C797729C3647C0076DFB9 /* TweetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				FE497DC629C20F23004FDC77 /* CaptionTextView.swift */,
+				FE9C797729C3647C0076DFB9 /* TweetCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				FE5224AC29A432A200AD6028 /* RegistrationController.swift in Sources */,
 				FE9717492998C49F00C4C4E1 /* MainTabController.swift in Sources */,
 				FE320A0C29ADDA88004571A9 /* Constant.swift in Sources */,
+				FE9C797829C3647C0076DFB9 /* TweetCell.swift in Sources */,
 				FE97174B2998C71100C4C4E1 /* FeedController.swift in Sources */,
 				FE2D874E29AE279E00818050 /* UserService.swift in Sources */,
 				FE9717512998C78100C4C4E1 /* ConversationController.swift in Sources */,
