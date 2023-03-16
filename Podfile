@@ -8,7 +8,7 @@ platform :ios, '13.0'
 
   # Pods for TwiterApp
 # Add the Firebase pod for Google Analytics
-pod 'FirebaseAnalytics'
+pod 'FirebaseAnalytics', '~> 10.5.0'
 
 # For Analytics without IDFA collection capability, use this pod instead
 # pod ‘Firebase/AnalyticsWithoutAdIdSupport’

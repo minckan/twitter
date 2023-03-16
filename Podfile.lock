@@ -98,7 +98,7 @@ PODS:
   - SDWebImage/Core (5.15.4)
 
 DEPENDENCIES:
-  - FirebaseAnalytics
+  - FirebaseAnalytics (~> 10.5.0)
   - FirebaseAuth
   - FirebaseDatabase
   - FirebaseStorage
@@ -143,6 +143,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   SDWebImage: 1c39de67663e5eebb2f41324d5d580eeea12dd4c
 
-PODFILE CHECKSUM: ac5c04ad8addc44607b285436a5dcb00a850b4ec
+PODFILE CHECKSUM: 2bc818dc0b612a94210296b2ea58729ecd35174b
 
 COCOAPODS: 1.11.3
