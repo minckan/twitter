@@ -100,6 +100,4 @@ extension FeedController: TweetCellDelegate {
         let controller = ProfileController(collectionViewLayout: UICollectionViewFlowLayout())
         navigationController?.pushViewController(controller, animated: true)
     }
-    
-    
 }
