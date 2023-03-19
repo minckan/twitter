@@ -33,6 +33,9 @@ class ProfileFilterView : UIView {
         
         collectionView.register(ProfileFilterCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+        let selectedIndexPath = IndexPath(row: 0, section: 0)
+        collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .left)
+        
         addSubview(collectionView)
         collectionView.addConstraintsToFillView(self)
     }
@@ -45,12 +48,15 @@ class ProfileFilterView : UIView {
 // MARK: - UICollectionViewDataSource
 extension ProfileFilterView : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        return ProfileFilteroption.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ProfileFilterCell
-
+        
+        cell.option = ProfileFilteroption(rawValue: indexPath.row)
+     
+        
         return cell
     }
 }
@@ -65,7 +71,8 @@ extension ProfileFilterView : UICollectionViewDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ProfileFilterView : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: frame.width / 3, height: frame.height)
+        let count = CGFloat(ProfileFilteroption.allCases.count)
+        return CGSize(width: frame.width / count, height: frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
