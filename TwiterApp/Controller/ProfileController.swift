@@ -14,7 +14,7 @@ private let headerIdentifier = "ProfileHeader"
 class ProfileController : UICollectionViewController {
     // MARK: - Properties
     
-    private let user : User
+    private var user : User
     
     private var tweets = [Tweet]() {
         didSet {
@@ -37,7 +37,8 @@ class ProfileController : UICollectionViewController {
         super.viewDidLoad()
         configureCollectionView()
         fetchTweets()
-        
+        checkIfUserIsFollowed()
+        fetchUserStats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +51,19 @@ class ProfileController : UICollectionViewController {
     func fetchTweets() {
         TweetService.shared.fetchTweets(forUser: user) { tweets in
             self.tweets = tweets
+        }
+    }
+    
+    func checkIfUserIsFollowed() {
+        UserService.shared.checkIfUserIsFollowed(uid: user.uid) { isFollowed in
+            self.user.isFollowed = isFollowed
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func fetchUserStats() {
+        UserService.shared.fetchUserStats(uid: user.uid) { stats in
+            self.user.stats = stats
         }
     }
     
@@ -99,6 +113,8 @@ extension ProfileController {
 
 extension ProfileController: UICollectionViewDelegateFlowLayout {
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 350)
     }
@@ -113,8 +129,21 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 extension ProfileController : ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
         
-        UserService.shared.followUser(uid: user.uid) { ref, error in
-            
+        if user.isCurrentUser {
+            print("DEBUG: show edit profile controller")
+            return
+        }
+        
+        if user.isFollowed {
+            UserService.shared.unfollowUser(uid: user.uid) { err, ref in
+                self.user.isFollowed = false
+                self.collectionView.reloadData()
+            }
+        } else {
+            UserService.shared.followUser(uid: user.uid) { ref, error in
+                self.user.isFollowed = true
+                self.collectionView.reloadData()
+            }
         }
     }
     
