@@ -46,6 +46,8 @@ struct AuthService {
                         return
                     }
                     
+                    
+                    
                     guard let uid = result?.user.uid else {return}
                     
                     let values = ["email": email, "username": username, "fullname": fullname, "profileImageUrl": profileImageUrl]

@@ -24,7 +24,7 @@ class CaptionTextView: UITextView {
         backgroundColor = .white
         font = UIFont.systemFont(ofSize: 16)
         isScrollEnabled = false
-        heightAnchor.constraint(equalToConstant: 300).isActive = true
+        heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         // 왜 여기서 view.addSubview가 아닌 그냥 addSubview 인가?
         addSubview(placeholderLabel)
@@ -32,6 +32,8 @@ class CaptionTextView: UITextView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChange), name: UITextView.textDidChangeNotification, object: nil)
     }
+    
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
