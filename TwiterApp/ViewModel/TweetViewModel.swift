@@ -76,7 +76,6 @@ struct TweetViewModel {
         measurementLabel.translatesAutoresizingMaskIntoConstraints = false
         measurementLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         
-        print("DEBUG: size - \(tweet.caption) : \( measurementLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)")
         
         return measurementLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
