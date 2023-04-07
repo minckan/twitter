@@ -45,6 +45,8 @@ class FeedController: UICollectionViewController {
         }
     }
     
+    
+    
     // MARK: - Helpers
     func configureUI() {
         view.backgroundColor = .white
@@ -122,6 +124,22 @@ extension FeedController: TweetCellDelegate {
         guard let user = cell.tweet?.user else {return}
         let controller = ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func handleLikeTweetTapped(_ cell: TweetCell) {
+        guard var tweet = cell.tweet else {return}
+        cell.tweet?.didLike.toggle()
+        print("DEBUG: Tweet is liked is \(tweet.didLike)")
+        
+        
+        if tweet.didLike {
+            TweetService.shared.dislikeTweet(forTweet: tweet) { err, ref in
+            }
+        } else {
+            TweetService.shared.likeTweet(forTweet: tweet) { _,_ in
+            }
+        }
+       
     }
 
 }

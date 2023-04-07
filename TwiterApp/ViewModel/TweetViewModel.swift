@@ -54,6 +54,18 @@ struct TweetViewModel {
         return title
     }
     
+    var likeImage : UIImage {
+        var image = UIImage()
+        
+        if tweet.didLike {
+            image = UIImage(named: "like_filled")?.withTintColor(.red, renderingMode: .alwaysOriginal) ?? UIImage()
+        } else {
+            image = UIImage(named: "like") ?? UIImage()
+        }
+        
+        return image
+    }
+    
     init(tweet: Tweet) {
         self.tweet = tweet
         self.user = tweet.user
@@ -79,5 +91,7 @@ struct TweetViewModel {
         
         return measurementLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
+    
+
 }
 

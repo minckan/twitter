@@ -10,6 +10,7 @@ import UIKit
 protocol TweetCellDelegate : class {
     func handleProfileImageTapped(_ cell: TweetCell)
     func handleReplyTweetTapped(_ cell: TweetCell)
+    func handleLikeTweetTapped(_ cell: TweetCell)
 }
 
 class TweetCell : UICollectionViewCell {
@@ -18,6 +19,7 @@ class TweetCell : UICollectionViewCell {
     
     var tweet : Tweet? {
         didSet {
+            checkIfTweetLiked()
             configure()
         }
     }
@@ -67,7 +69,7 @@ class TweetCell : UICollectionViewCell {
     }()
     private lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "like"), for: .normal)
+
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
@@ -109,6 +111,8 @@ class TweetCell : UICollectionViewCell {
         underLineView.backgroundColor = .systemGroupedBackground
         addSubview(underLineView)
         underLineView.anchor(top: topAnchor, bottom: bottomAnchor, right: rightAnchor, height: 1)
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -127,10 +131,18 @@ class TweetCell : UICollectionViewCell {
         
     }
     @objc func handleLikeTapped() {
-        
+        delegate?.handleLikeTweetTapped(self)
     }
     @objc func handleShareTapped() {
         
+    }
+    
+    // MARK: - API
+    func checkIfTweetLiked() {
+        guard let tweet = tweet else {return}
+        TweetService.shared.checkDidLike(forTweet: tweet) { didLike in
+            self.tweet?.didLike = didLike
+        }
     }
     
     // MARK: - Helpers
@@ -142,6 +154,7 @@ class TweetCell : UICollectionViewCell {
         captionLabel.text = tweet.caption
         infoLabel.attributedText = viewModel.userInfoText
         profileImageView.sd_setImage(with: viewModel.profileImageUrl)
+        likeButton.setImage(viewModel.likeImage, for: .normal)
         
         
     }
