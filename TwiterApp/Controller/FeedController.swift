@@ -42,9 +42,19 @@ class FeedController: UICollectionViewController {
     func fetchTweets() {
         TweetService.shared.fetchTweet { tweets in
             self.tweets = tweets
+            self.checkIfUserLikedTweets(tweets)
+           
         }
     }
     
+    func checkIfUserLikedTweets(_ tweets: [Tweet]) {
+        for (index, tweet) in tweets.enumerated() {
+            TweetService.shared.checkDidLike(forTweet: tweet) { didLike in
+                guard didLike == true else {return}
+                self.tweets[index].didLike = true
+            }
+        }
+    }
     
     
     // MARK: - Helpers
@@ -92,6 +102,7 @@ extension FeedController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("DEBUG: \(tweets[indexPath.row])")
         let controller = TweetController(tweet: tweets[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -128,16 +139,15 @@ extension FeedController: TweetCellDelegate {
     
     func handleLikeTweetTapped(_ cell: TweetCell) {
         guard var tweet = cell.tweet else {return}
-        cell.tweet?.didLike.toggle()
-        print("DEBUG: Tweet is liked is \(tweet.didLike)")
-        
-        
-        if tweet.didLike {
-            TweetService.shared.dislikeTweet(forTweet: tweet) { err, ref in
-            }
-        } else {
-            TweetService.shared.likeTweet(forTweet: tweet) { _,_ in
-            }
+        TweetService.shared.likeTweet(forTweet: tweet) { _,_ in
+            cell.tweet?.didLike.toggle()
+            let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
+            cell.tweet?.likes = likes
+            
+            // only upload notification if tweet is being liked.
+            guard !tweet.didLike ?? false else { return }
+            
+            NotificationService.shared.uploadNotification(type: .like)
         }
        
     }

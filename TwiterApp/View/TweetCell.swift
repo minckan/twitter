@@ -19,7 +19,6 @@ class TweetCell : UICollectionViewCell {
     
     var tweet : Tweet? {
         didSet {
-            checkIfTweetLiked()
             configure()
         }
     }
@@ -138,12 +137,6 @@ class TweetCell : UICollectionViewCell {
     }
     
     // MARK: - API
-    func checkIfTweetLiked() {
-        guard let tweet = tweet else {return}
-        TweetService.shared.checkDidLike(forTweet: tweet) { didLike in
-            self.tweet?.didLike = didLike
-        }
-    }
     
     // MARK: - Helpers
     func configure() {

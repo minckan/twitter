@@ -10,6 +10,8 @@
 		4E3D90CC104A375E46F53B82 /* Pods_TwiterApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B04EFA2AD620AF634E4DAF84 /* Pods_TwiterApp.framework */; };
 		8C3284EC29DFAC0F0058BB27 /* ActionSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3284EB29DFAC0F0058BB27 /* ActionSheetCell.swift */; };
 		8C3284EE29DFB5D40058BB27 /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3284ED29DFB5D40058BB27 /* ActionSheetViewModel.swift */; };
+		8C48267D29E3E45400AC8CE1 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C48267C29E3E45400AC8CE1 /* Notification.swift */; };
+		8C48267F29E3E60A00AC8CE1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C48267E29E3E60A00AC8CE1 /* NotificationService.swift */; };
 		8C4B297D29C2A4B6004DF4B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C4B297C29C2A4B6004DF4B4 /* GoogleService-Info.plist */; };
 		8C4B297F29C2C3FD004DF4B4 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4B297E29C2C3FD004DF4B4 /* Tweet.swift */; };
 		8C73C83129DD5298007783BF /* UploadTweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C73C83029DD5298007783BF /* UploadTweetViewModel.swift */; };
@@ -70,6 +72,8 @@
 		5308251790CCE4ADD559D977 /* Pods-TwiterApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwiterApp.debug.xcconfig"; path = "Target Support Files/Pods-TwiterApp/Pods-TwiterApp.debug.xcconfig"; sourceTree = "<group>"; };
 		8C3284EB29DFAC0F0058BB27 /* ActionSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetCell.swift; sourceTree = "<group>"; };
 		8C3284ED29DFB5D40058BB27 /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
+		8C48267C29E3E45400AC8CE1 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		8C48267E29E3E60A00AC8CE1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		8C4B297C29C2A4B6004DF4B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C4B297E29C2C3FD004DF4B4 /* Tweet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		8C73C83029DD5298007783BF /* UploadTweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetViewModel.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 				FE2D874B29ADF26900818050 /* AuthService.swift */,
 				FE2D874D29AE279E00818050 /* UserService.swift */,
 				FE497DC829C21E05004FDC77 /* TweetService.swift */,
+				8C48267E29E3E60A00AC8CE1 /* NotificationService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -274,6 +279,7 @@
 			children = (
 				FE2D874F29AE2BCB00818050 /* User.swift */,
 				8C4B297E29C2C3FD004DF4B4 /* Tweet.swift */,
+				8C48267C29E3E45400AC8CE1 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -458,6 +464,7 @@
 				FE497DC929C21E05004FDC77 /* TweetService.swift in Sources */,
 				FE97175529A2332600C4C4E1 /* Extensions.swift in Sources */,
 				FE97174D2998C75300C4C4E1 /* NotificationController.swift in Sources */,
+				8C48267F29E3E60A00AC8CE1 /* NotificationService.swift in Sources */,
 				FE497DC529C207A6004FDC77 /* UploadTweetsController.swift in Sources */,
 				FE9717112998C29500C4C4E1 /* AppDelegate.swift in Sources */,
 				FE2D875029AE2BCB00818050 /* User.swift in Sources */,
@@ -485,6 +492,7 @@
 				FE9717512998C78100C4C4E1 /* ConversationController.swift in Sources */,
 				8C73C83129DD5298007783BF /* UploadTweetViewModel.swift in Sources */,
 				8CB616D129DE52F300F2A268 /* ActionSheetLauncher.swift in Sources */,
+				8C48267D29E3E45400AC8CE1 /* Notification.swift in Sources */,
 				FE97174F2998C76A00C4C4E1 /* ExploreController.swift in Sources */,
 				8C3284EE29DFB5D40058BB27 /* ActionSheetViewModel.swift in Sources */,
 				FE2D874C29ADF26900818050 /* AuthService.swift in Sources */,

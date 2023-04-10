@@ -87,17 +87,29 @@ struct TweetService {
     
     func likeTweet(forTweet tweet: Tweet, completion: @escaping(DatabaseCompletion)) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        REF_TWEET_LIKES.child(tweet.tweetId).updateChildValues([uid: 1]) { err, ref in
-            REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetId: 1], withCompletionBlock: completion)
+        let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
+        
+        
+        REF_TWEETS.child(tweet.tweetId).child("likes").setValue(likes)
+        
+        if tweet.didLike {
+            REF_USER_LIKES.child(uid).child(tweet.tweetId).removeValue { err, ref in
+                REF_TWEET_LIKES.child(tweet.tweetId).child(uid).removeValue(completionBlock: completion)
+            }
+        } else {
+            
+            REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetId: 1]) { err, ref in
+                REF_TWEET_LIKES.child(tweet.tweetId).updateChildValues([uid: 1], withCompletionBlock: completion)
+            }
+//
+//            REF_TWEET_LIKES.child(tweet.tweetId).updateChildValues([uid: 1]) { err, ref in
+//                REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetId: 1], withCompletionBlock: completion)
+//            }
         }
+        
+        
     }
-    
-    func dislikeTweet(forTweet tweet: Tweet, completion: @escaping(DatabaseCompletion)) {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        REF_TWEET_LIKES.child(tweet.tweetId).child(uid).removeValue { err, ref in
-            REF_USER_LIKES.child(uid).child(tweet.tweetId).removeValue(completionBlock: completion)
-        }
-    }
+
     
     func checkDidLike(forTweet tweet: Tweet, completion: @escaping(Bool)->Void) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
