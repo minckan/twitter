@@ -31,11 +31,7 @@ class NotificationCell : UITableViewCell {
         iv.setDimensions(width: 40, height: 40)
         iv.layer.cornerRadius = 40/2
         iv.backgroundColor = .twitterBlue
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
-        iv.addGestureRecognizer(tap)
-        iv.isUserInteractionEnabled = true
-        
+              
 
         return iv
     }()
@@ -54,13 +50,20 @@ class NotificationCell : UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        
+        
         let stack = UIStackView(arrangedSubviews: [profileImageView, notificationLabel])
         stack.spacing = 8
         stack.alignment = .center
         
-        addSubview(stack)
+        // TableViewCell은 contentView가 있다. 따라서 요소에 이벤트를 걸때 요소 위에 만들어야 이벤트가 동작한다.
+        contentView.addSubview(stack)
         stack.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
         stack.anchor(right: rightAnchor, paddingRight: 12)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        profileImageView.addGestureRecognizer(tap)
+        profileImageView.isUserInteractionEnabled = true
     }
     
     required init?(coder: NSCoder) {
