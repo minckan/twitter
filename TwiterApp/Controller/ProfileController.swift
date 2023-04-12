@@ -138,11 +138,15 @@ extension ProfileController : ProfileHeaderDelegate {
             UserService.shared.unfollowUser(uid: user.uid) { err, ref in
                 self.user.isFollowed = false
                 self.collectionView.reloadData()
+                
+                
             }
         } else {
             UserService.shared.followUser(uid: user.uid) { ref, error in
                 self.user.isFollowed = true
                 self.collectionView.reloadData()
+                
+                NotificationService.shared.uploadNotification(type: .follow, user: self.user)
             }
         }
     }

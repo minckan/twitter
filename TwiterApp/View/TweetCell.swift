@@ -37,6 +37,7 @@ class TweetCell : UICollectionViewCell {
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
         
+        
         return iv
     }()
     
@@ -120,7 +121,8 @@ class TweetCell : UICollectionViewCell {
     
     // MARK: - Selectors
     @objc func handleProfileImageTapped() {
-        delegate?.handleProfileImageTapped(self)
+        print("!!!!")
+//        delegate?.handleProfileImageTapped(self)
     }
     
     @objc func handleCommentTapped() {
