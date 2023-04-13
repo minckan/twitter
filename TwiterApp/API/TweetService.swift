@@ -26,15 +26,12 @@ struct TweetService {
         case .replay(let tweet):
             REF_TWEET_REPLIES.child(tweet.tweetId).childByAutoId().updateChildValues(values, withCompletionBlock: completion)
         }
-        
-       
-        
-        
     }
     
     func fetchTweet(completion: @escaping([Tweet]) -> Void) {
         var tweets = [Tweet]()
         
+        // TODO: - 시간 오름차순으로 정렬 조회
         REF_TWEETS.observe(.childAdded) { snapshot in
             guard let dictionary = snapshot.value as? [String:Any] else {return}
             guard let uid = dictionary["uid"] as? String else {return}
@@ -45,24 +42,29 @@ struct TweetService {
                 tweets.append(tweet)
                 completion(tweets)
             }
-           
-
         }
     }
+
     
     func fetchTweets(forUser user: User, completion: @escaping([Tweet])->Void) {
         var tweets = [Tweet]()
         REF_USER_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
             let tweetID = snapshot.key
             
-            REF_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
-                guard let dictionary = snapshot.value as? [String:Any] else {return}
-                guard let uid = dictionary["uid"] as? String else {return}
-                UserService.shared.fetchUser(uid: uid) { user in
-                    let tweet = Tweet(user:user , tweetId: tweetID, dictionary: dictionary)
-                    tweets.append(tweet)
-                    completion(tweets)
-                }
+            self.fetchTweet(withTweetID: tweetID) { tweet in
+                tweets.append(tweet)
+                completion(tweets)
+            }
+        }
+    }
+    
+    func fetchTweet(withTweetID tweetID: String, completion: @escaping(Tweet) -> Void) {
+        REF_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionary = snapshot.value as? [String:Any] else {return}
+            guard let uid = dictionary["uid"] as? String else {return}
+            UserService.shared.fetchUser(uid: uid) { user in
+                let tweet = Tweet(user:user , tweetId: tweetID, dictionary: dictionary)
+                completion(tweet)
             }
         }
     }

@@ -12,6 +12,8 @@ private let reuseIdentifier = "TweetCell"
 
 class FeedController: UICollectionViewController {
     // MARK: - Properties
+    private var refreshControl : UIRefreshControl?
+    
     var user : User? {
         didSet {
             configureLeftBarButton()
@@ -40,7 +42,9 @@ class FeedController: UICollectionViewController {
     // MARK: - API
     
     func fetchTweets() {
+        refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweet { tweets in
+            self.refreshControl?.endRefreshing()
             self.tweets = tweets
             self.checkIfUserLikedTweets(tweets)
            
@@ -56,6 +60,11 @@ class FeedController: UICollectionViewController {
         }
     }
     
+    // MARK: - Selectors
+    @objc func handleRefresh() {
+        fetchTweets()
+    }
+    
     
     // MARK: - Helpers
     func configureUI() {
@@ -69,8 +78,9 @@ class FeedController: UICollectionViewController {
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
         
-        
-        
+        refreshControl = UIRefreshControl()
+        collectionView.refreshControl = refreshControl
+        refreshControl?.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
     
     func configureLeftBarButton() {
@@ -102,7 +112,6 @@ extension FeedController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("DEBUG: \(tweets[indexPath.row])")
         let controller = TweetController(tweet: tweets[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }

@@ -30,7 +30,6 @@ struct NotificationViewModel {
         case .like: return " liked your tweets"
         case .retweet: return " retweeted your tweet"
         case .mention: return " mentioned you in a tweet"
-        default: return "Unknown"
         }
     }
     
@@ -48,11 +47,17 @@ struct NotificationViewModel {
         return user.profileImageUrl
     }
     
+    var shouldHideFollowButton: Bool {
+        return type != .follow
+    }
+    
+    var followButtonText : String {
+        return user.isFollowed ? "Following" : "Follow"
+    }
+    
     init(notification: Notification) {
         self.notification = notification
         self.type = notification.type
         self.user = notification.user
-        
-        print("DEBUG: \(self.user)")
     }
 }

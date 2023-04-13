@@ -11,6 +11,7 @@ import SDWebImage
 
 protocol NotificationCellDelegate: AnyObject {
     func didTappedProfileImage(_ cell: NotificationCell)
+    func didTapFollow(_ cell: NotificationCell)
 }
 
 class NotificationCell : UITableViewCell {
@@ -46,6 +47,16 @@ class NotificationCell : UITableViewCell {
         return label
     }()
     
+    let followButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Loading", for: .normal)
+        button.layer.borderColor = UIColor.twitterBlue.cgColor
+        button.layer.borderWidth = 2
+        button.setTitleColor(.twitterBlue, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        return button
+    }()
+    
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -64,6 +75,15 @@ class NotificationCell : UITableViewCell {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
         profileImageView.addGestureRecognizer(tap)
         profileImageView.isUserInteractionEnabled = true
+        
+        
+        
+        contentView.addSubview(followButton)
+        followButton.centerY(inView: self)
+        followButton.setDimensions(width: 92, height: 32)
+        followButton.layer.cornerRadius = 32 / 2
+        followButton.anchor(right: rightAnchor, paddingRight: 12)
+        followButton.addTarget(self, action: #selector(handleEditFollow), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -72,8 +92,11 @@ class NotificationCell : UITableViewCell {
     
     // MARK: - Selector
     @objc func handleProfileImageTapped() {
-        print("111111")
         delegate?.didTappedProfileImage(self)
+    }
+    
+    @objc func handleEditFollow() {
+        delegate?.didTapFollow(self)
     }
     
     // MARK: - Helpers
@@ -83,6 +106,10 @@ class NotificationCell : UITableViewCell {
         notificationLabel.attributedText = viewModel.notificationText
         
         profileImageView.sd_setImage(with: viewModel.profileImageUrl)
+        
+        followButton.isHidden = viewModel.shouldHideFollowButton
+        
+        followButton.setTitle(viewModel.followButtonText, for: .normal)
 
     }
     

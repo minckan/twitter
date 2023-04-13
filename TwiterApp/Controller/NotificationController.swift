@@ -21,18 +21,41 @@ class NotificationController: UITableViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       
         fetchNotifications()
-       
+        configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        
+    }
+     
     // MARK: - API
     func fetchNotifications() {
+        refreshControl?.beginRefreshing()
         NotificationService.shared.fetchNotifications { notifications in
+            self.refreshControl?.endRefreshing()
             self.notifications = notifications
-            self.configureUI()
+            self.checkIfUserFollowed(notifications: notifications)
         }
+    }
+    
+    func checkIfUserFollowed(notifications: [Notification]) {
+        for (index, notification) in notifications.enumerated() {
+            if case .follow = notification.type {
+                let user = notification.user
+                
+                UserService.shared.checkIfUserIsFollowed(uid: user.uid) { isFollowed in
+                    self.notifications[index].user.isFollowed = isFollowed
+                }
+            }
+        }
+    }
+    
+    // MARK: - Selectors
+    @objc func handleRefresh() {
+        fetchNotifications()
     }
     
     // MARK: - Helpers
@@ -43,6 +66,11 @@ class NotificationController: UITableViewController {
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 60
         tableView.separatorStyle = .none
+        
+        let refreshControl = UIRefreshControl()
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        
     }
 }
 
@@ -58,17 +86,39 @@ extension NotificationController {
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Selected")
+        let notification = notifications[indexPath.row]
+        guard let tweetId = notification.tweetId else {return}
+        
+        TweetService.shared.fetchTweet(withTweetID: tweetId) { tweet in
+            let controller = TweetController(tweet: tweet)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 
 extension NotificationController: NotificationCellDelegate {
     func didTappedProfileImage(_ cell: NotificationCell) {
-        print("???")
         guard let user = cell.notification?.user else {return}
         
         let controller = ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
         
+    }
+    
+    func didTapFollow(_ cell: NotificationCell) {
+        guard let user = cell.notification?.user else {return}
+        
+        if user.isFollowed {
+            UserService.shared.unfollowUser(uid: user.uid) { err, ref in
+                cell.notification?.user.isFollowed = false
+            }
+        } else {
+            UserService.shared.followUser(uid: user.uid) { err, ref in
+                cell.notification?.user.isFollowed = true
+            }
+        }
+        
+        tableView.reloadData()
+       
     }
 }

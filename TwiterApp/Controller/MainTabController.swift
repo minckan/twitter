@@ -102,7 +102,6 @@ class MainTabController: UITabBarController {
         
         
         viewControllers = [nav1, nav2, nav3, nav4]
-        
     }
     
     func templateNavigationController(image: UIImage?, rootViewController: UIViewController) -> UINavigationController {
@@ -114,7 +113,6 @@ class MainTabController: UITabBarController {
 }
 
 extension MainTabController: UITabBarControllerDelegate {
-
     /*
      Called to allow the delegate to return a UIViewControllerAnimatedTransitioning delegate object for use during a noninteractive tab bar view controller transition.
      ref: https://developer.apple.com/documentation/uikit/uitabbarcontrollerdelegate/1621167-tabbarcontroller
@@ -122,7 +120,6 @@ extension MainTabController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return TabBarAnimatedTransitioning()
     }
-
 }
 
 final class TabBarAnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
