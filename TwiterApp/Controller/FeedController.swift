@@ -12,7 +12,7 @@ private let reuseIdentifier = "TweetCell"
 
 class FeedController: UICollectionViewController {
     // MARK: - Properties
-    private var refreshControl : UIRefreshControl?
+   
     
     var user : User? {
         didSet {
@@ -42,20 +42,25 @@ class FeedController: UICollectionViewController {
     // MARK: - API
     
     func fetchTweets() {
-        refreshControl?.beginRefreshing()
+        collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweet { tweets in
-            self.refreshControl?.endRefreshing()
-            self.tweets = tweets
-            self.checkIfUserLikedTweets(tweets)
+            
+            self.tweets = tweets.sorted(by: {$0.timeStamp > $1.timeStamp})
+            self.checkIfUserLikedTweets()
+
+            self.collectionView.refreshControl?.endRefreshing()
            
         }
     }
     
-    func checkIfUserLikedTweets(_ tweets: [Tweet]) {
-        for (index, tweet) in tweets.enumerated() {
+    func checkIfUserLikedTweets() {
+        self.tweets.forEach { tweet in
             TweetService.shared.checkDidLike(forTweet: tweet) { didLike in
                 guard didLike == true else {return}
-                self.tweets[index].didLike = true
+                
+                if let index = self.tweets.firstIndex(where: {$0.tweetId == tweet.tweetId}) {
+                    self.tweets[index].didLike = true
+                }
             }
         }
     }
@@ -78,9 +83,9 @@ class FeedController: UICollectionViewController {
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
         
-        refreshControl = UIRefreshControl()
+        let refreshControl = UIRefreshControl()
         collectionView.refreshControl = refreshControl
-        refreshControl?.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
     
     func configureLeftBarButton() {
@@ -122,10 +127,8 @@ extension FeedController {
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewModel = TweetViewModel(tweet: tweets[indexPath.row])
-        
         let height = viewModel.size(forWidth: view.frame.width).height
-        
-        
+
         return CGSize(width: view.frame.width, height: height + 72)
     }
 }
