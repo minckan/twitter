@@ -94,3 +94,21 @@ extension UIColor {
     
     static let twitterBlue = UIColor.rgb(red: 29, green: 161, blue: 242)
 }
+
+
+// MARK: - UINavigationController
+class CustomNavigationController: UINavigationController {
+    var overrideStatusBarStyle: UIStatusBarStyle? {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if let overrideStatusBarStyle = overrideStatusBarStyle {
+            return overrideStatusBarStyle
+        } else {
+            return super.preferredStatusBarStyle
+        }
+    }
+}

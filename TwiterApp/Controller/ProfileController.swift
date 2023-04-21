@@ -59,6 +59,7 @@ class ProfileController : UICollectionViewController {
         super.viewWillAppear(animated)
         // TODO: 네비게이션 바 컬러 변경하기
         navigationController?.navigationBar.isHidden = true
+        setNavigationBarColor(color: .white)
     }
     
     // MARK: - API
@@ -172,7 +173,10 @@ extension ProfileController : ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
         
         if user.isCurrentUser {
-            print("DEBUG: show edit profile controller")
+            let controller = EditProfileController(user: user)
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true)
             return
         }
         

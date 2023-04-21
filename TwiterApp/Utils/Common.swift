@@ -7,10 +7,12 @@
 
 import UIKit
 
-func setNavigationBarColor() {
+func setNavigationBarColor(color: UIColor, textColor: UIColor? = .black) {
     let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
+    appearance.configureWithDefaultBackground()
+    appearance.backgroundColor = color
+    appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: textColor]
     UINavigationBar.appearance().standardAppearance = appearance
     UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    
 }
