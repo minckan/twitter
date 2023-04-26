@@ -174,6 +174,7 @@ extension ProfileController : ProfileHeaderDelegate {
         
         if user.isCurrentUser {
             let controller = EditProfileController(user: user)
+            controller.delegate = self
             let nav = UINavigationController(rootViewController: controller)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true)
@@ -192,7 +193,7 @@ extension ProfileController : ProfileHeaderDelegate {
                 self.user.isFollowed = true
                 self.collectionView.reloadData()
                 
-                NotificationService.shared.uploadNotification(type: .follow, user: self.user)
+                NotificationService.shared.uploadNotification(toUser: self.user, type: .follow)
             }
         }
     }
@@ -205,5 +206,13 @@ extension ProfileController : ProfileHeaderDelegate {
     func didSelect(filter: ProfileFilteroption) {
 //        print("DEBUG: Did select filter \(filter.description)")
         self.selectedFilter = filter
+    }
+}
+
+extension ProfileController : EditProfileControllerDelegate {
+    func controller(_ controller: EditProfileController, wantsToUpdate user: User) {
+        controller.dismiss(animated: true)
+        self.user = user
+        self.collectionView.reloadData()
     }
 }

@@ -14,8 +14,8 @@ enum EditProfileOptions: Int, CaseIterable {
     
     var description : String {
         switch self {
-        case.fullname : return "Username"
-        case.username : return "Name"
+        case.fullname : return "Name"
+        case.username : return "UserName"
         case.bio : return "Bio"
         }
     }
@@ -32,8 +32,8 @@ struct EditProfileViewModel {
     var optionValue:  String? {
         switch option {
             
-        case .fullname: return user.username
-        case .username: return user.fullname
+        case .fullname: return user.fullname
+        case .username: return user.username
         case .bio: return user.bio
         }
     }
@@ -44,6 +44,10 @@ struct EditProfileViewModel {
     
     var shouldHideTextView: Bool {
         return option != .bio
+    }
+    
+    var shouldHidePlaceholderLabel : Bool {
+        return user.bio != nil
     }
     
     init(user: User, option: EditProfileOptions) {

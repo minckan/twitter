@@ -32,7 +32,7 @@ class MainTabController: UITabBarController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logUserOut()
+        logUserOut()
         view.backgroundColor = .twitterBlue
         authenticateUserAndConfigureUI()
         

@@ -9,11 +9,22 @@ import UIKit
 
 private let reusableIdentifier = "EditProfileCell"
 
+protocol EditProfileControllerDelegate: AnyObject{
+    func controller(_ controller: EditProfileController, wantsToUpdate user: User)
+}
+
 class EditProfileController: UITableViewController {
     // MARK: - Properties
-    private let user: User
+    private var user: User
     private lazy var headerView = EditProfileHeader(user: user)
     private let imagePicker = UIImagePickerController()
+    private var userInfoChanged = false
+    weak var delegate : EditProfileControllerDelegate?
+    
+    private var imageChanged: Bool {
+        return selectedImage != nil
+    }
+    
     private var selectedImage: UIImage? {
         didSet {
             headerView.profileImageView.image = selectedImage
@@ -52,10 +63,42 @@ class EditProfileController: UITableViewController {
     }
     
     @objc func handleDone() {
-        dismiss(animated: true)
+        view.endEditing(true)
+        guard imageChanged || userInfoChanged else {return}
+        
+        updateUserData()
     }
     
     // MARK: - API
+    
+    func updateUserData() {
+        if imageChanged && !userInfoChanged {
+            updateProfileImage()
+        }
+        
+        if userInfoChanged && !imageChanged {
+            UserService.shared.saveUserData(user: user) { err, ref in
+                self.delegate?.controller(self, wantsToUpdate: self.user)
+            }
+        }
+        
+        if userInfoChanged && imageChanged {
+            UserService.shared.saveUserData(user: user) { err, ref in
+                self.updateProfileImage()
+            }
+        }
+       
+    }
+    
+    func updateProfileImage() {
+        guard let image = selectedImage else {return}
+        UserService.shared.updateProfileImage(image: image) { newProfileImageUrl in
+            self.user.profileImageUrl = newProfileImageUrl
+            self.delegate?.controller(self, wantsToUpdate: self.user)
+        }
+    }
+    
+
     
     // MARK: - Helpers
     func configureNavigationBar() {
@@ -68,7 +111,6 @@ class EditProfileController: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
         
-        navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     func configureTableView() {
@@ -87,6 +129,8 @@ class EditProfileController: UITableViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension EditProfileController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return EditProfileOptions.allCases.count
@@ -103,6 +147,8 @@ extension EditProfileController {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension EditProfileController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let option = EditProfileOptions(rawValue: indexPath.row) else {return 0}
@@ -111,11 +157,15 @@ extension EditProfileController {
     }
 }
 
+// MARK: - EditProfileHeaderDelegate
+
 extension EditProfileController : EditProfileHeaderDelegate {
     func didTapChangeProfilePhoto() {
         present(imagePicker, animated: true)
     }
 }
+
+// MARK: - UIImagePickerControllerDelegate , UINavigationControllerDelegate
 
 extension EditProfileController : UIImagePickerControllerDelegate , UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -127,8 +177,26 @@ extension EditProfileController : UIImagePickerControllerDelegate , UINavigation
     }
 }
 
+// MARK: - EditProfileCellDelegate
+
 extension EditProfileController: EditProfileCellDelegate {
     func updateUserInfo(_ cell: EditProfileCell) {
-        print("DEBUG: update here...")
+        guard let viewModel = cell.viewModel else {return}
+        userInfoChanged = true
+        navigationItem.rightBarButtonItem?.isEnabled = true
+
+        switch viewModel.option {
+            
+        case .fullname:
+            guard let value = cell.infoTextField.text else {return}
+            user.fullname = value
+        case .username:
+            guard let value = cell.infoTextField.text else {return}
+            user.username = value
+        case .bio:
+            user.bio = cell.bioTextView.text
+        }
+        
+        
     }
 }

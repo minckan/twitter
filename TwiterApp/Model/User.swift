@@ -9,9 +9,9 @@ import Foundation
 import FirebaseAuth
 
 struct User {
-    let fullname: String
+    var fullname: String
     let email: String
-    let username: String
+    var username: String
     var profileImageUrl: URL?
     let uid: String
     var isFollowed = false

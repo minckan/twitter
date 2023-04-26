@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import ActiveLabel
 
-protocol TweetCellDelegate : class {
+protocol TweetCellDelegate : AnyObject {
     func handleProfileImageTapped(_ cell: TweetCell)
     func handleReplyTweetTapped(_ cell: TweetCell)
     func handleLikeTweetTapped(_ cell: TweetCell)
+    func handleFetchUser(withUsername username: String)
 }
 
 class TweetCell : UICollectionViewCell {
@@ -20,6 +22,7 @@ class TweetCell : UICollectionViewCell {
     var tweet : Tweet? {
         didSet {
             configure()
+
         }
     }
     
@@ -41,10 +44,12 @@ class TweetCell : UICollectionViewCell {
         return iv
     }()
     
-    private let captionLabel: UILabel = {
-        let label = UILabel()
+    private let captionLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
         return label
     }()
 
@@ -83,10 +88,12 @@ class TweetCell : UICollectionViewCell {
         return button
     }()
     
-    private let replyLabel: UILabel = {
-       let label = UILabel()
+    private let replyLabel: ActiveLabel = {
+       let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
+        label.mentionColor = .twitterBlue
+     
         return label
     }()
     
@@ -132,6 +139,7 @@ class TweetCell : UICollectionViewCell {
         addSubview(underLineView)
         underLineView.anchor(top: topAnchor, bottom: bottomAnchor, right: rightAnchor, height: 1)
         
+        configureMentionHandler()
         
     }
     
@@ -172,5 +180,13 @@ class TweetCell : UICollectionViewCell {
         
         replyLabel.isHidden = viewModel.shouldHideReplyLabel
         replyLabel.text = viewModel.replyText
+
+    }
+    
+    
+    func configureMentionHandler() {
+        captionLabel.handleMentionTap { mention in
+            self.delegate?.handleFetchUser(withUsername: mention)
+        }
     }
 }

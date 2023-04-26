@@ -27,7 +27,6 @@ class EditProfileCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "Text Title"
         return label
     }()
     
@@ -46,6 +45,7 @@ class EditProfileCell: UITableViewCell {
         tv.font = UIFont.systemFont(ofSize: 14)
         tv.textColor = .twitterBlue
         tv.placeholderLabel.text = "Bio"
+        
         return tv
     }()
     
@@ -56,15 +56,19 @@ class EditProfileCell: UITableViewCell {
         
         selectionStyle = .none
         
-        addSubview(titleLabel)
+        // TableView에는 contentView가 있음을 잊지말자!!
+        
+        contentView.addSubview(titleLabel)
         titleLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         titleLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 16)
         
-        addSubview(infoTextField)
+        contentView.addSubview(infoTextField)
         infoTextField.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingRight: 8)
         
-        addSubview(bioTextView)
-        bioTextView.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingRight: 8)
+        contentView.addSubview(bioTextView)
+        bioTextView.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 14, paddingRight: 8)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateUserInfo), name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -86,6 +90,10 @@ class EditProfileCell: UITableViewCell {
         titleLabel.text = viewModel.titleText
         
         infoTextField.text = viewModel.optionValue
+        
+        
         bioTextView.text = viewModel.optionValue
+        bioTextView.placeholderLabel.isHidden = viewModel.shouldHidePlaceholderLabel
+        
     }
 }

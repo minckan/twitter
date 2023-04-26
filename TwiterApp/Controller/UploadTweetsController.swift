@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import ActiveLabel
 
 
 class UploadTweetsController : UIViewController {
@@ -43,11 +43,11 @@ class UploadTweetsController : UIViewController {
         return iv
     }()
     
-    private lazy var replyLabel: UILabel = {
-        let label = UILabel()
+    private lazy var replyLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "replying to @minju"
+        label.mentionColor = .twitterBlue
         label.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
         return label
     }()
@@ -70,7 +70,7 @@ class UploadTweetsController : UIViewController {
         super.viewDidLoad()
         configureUI()
         
-        
+        configureMentionHandler()
 
     }
     
@@ -89,14 +89,34 @@ class UploadTweetsController : UIViewController {
             }
             
             if case .replay(let tweet) = self.config {
-                NotificationService.shared.uploadNotification(type: .reply, tweet: tweet)
+                NotificationService.shared.uploadNotification(toUser: tweet.user, type: .reply, tweetId: tweet.tweetId)
             }
             
+            self.uploadMentionNotification(forCaption: caption, tweetId: ref.key)
+            
             self.dismiss(animated: true)
+            
+            
         }
     }
     
     // MARK: - API
+    
+    fileprivate func uploadMentionNotification(forCaption caption: String, tweetId: String?){
+        guard caption.contains("@") else {return}
+        let words = caption.components(separatedBy: .whitespacesAndNewlines)
+        
+        words.forEach { word in
+            guard word.hasPrefix("@") else {return}
+            
+            var username = word.trimmingCharacters(in: .symbols)
+            username = username.trimmingCharacters(in: .punctuationCharacters)
+            
+            UserService.shared.fetchUser(withUsername: username) { mentionedUser in
+                NotificationService.shared.uploadNotification(toUser: mentionedUser, type: .mention, tweetId: tweetId)
+            }
+        }
+    }
     
     // MARK: - Helpers
     
@@ -137,6 +157,12 @@ class UploadTweetsController : UIViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
+    }
+    
+    func configureMentionHandler() {
+        replyLabel.handleMentionTap { mention in
+           
+        }
     }
   
 }
