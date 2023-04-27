@@ -32,7 +32,6 @@ class MainTabController: UITabBarController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        logUserOut()
         view.backgroundColor = .twitterBlue
         authenticateUserAndConfigureUI()
         
@@ -60,13 +59,6 @@ class MainTabController: UITabBarController {
         }
     }
     
-    func logUserOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch let error {
-            print("DEBUG: Failed to sign out with error \(error.localizedDescription)")
-        }
-    }
     
     // MARK: - Selectors
     @objc func ActionButtonTabbed() {

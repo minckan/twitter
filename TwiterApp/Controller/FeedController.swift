@@ -7,12 +7,14 @@
 
 import UIKit
 import SDWebImage
+import SideMenu
 
 private let reuseIdentifier = "TweetCell"
 
 class FeedController: UICollectionViewController {
     // MARK: - Properties
    
+  
     
     var user : User? {
         didSet {
@@ -71,6 +73,15 @@ class FeedController: UICollectionViewController {
     }
     
     
+    @objc func handleOpenSideMenu() {
+        guard let user = user else {return}
+        let controller = SideMenuViewController(user: user)
+        let menu = CustomSideMenuNavigationController(rootViewController: controller)
+                
+        present(menu, animated: true, completion: nil)
+    
+    }
+    
     // MARK: - Helpers
     func configureUI() {
         view.backgroundColor = .white
@@ -97,6 +108,11 @@ class FeedController: UICollectionViewController {
         profileImageView.layer.masksToBounds = true
         
         profileImageView.sd_setImage(with: user.profileImageUrl)
+        
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleOpenSideMenu))
+        profileImageView.addGestureRecognizer(tap)
+        profileImageView.isUserInteractionEnabled = true
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
     }

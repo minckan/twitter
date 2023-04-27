@@ -110,6 +110,7 @@ PODS:
   - SDWebImage (5.15.4):
     - SDWebImage/Core (= 5.15.4)
   - SDWebImage/Core (5.15.4)
+  - SideMenu (6.5.0)
 
 DEPENDENCIES:
   - ActiveLabel
@@ -119,6 +120,7 @@ DEPENDENCIES:
   - FirebaseMessaging
   - FirebaseStorage
   - SDWebImage (~> 5.0)
+  - SideMenu
 
 SPEC REPOS:
   trunk:
@@ -142,6 +144,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - SDWebImage
+    - SideMenu
 
 SPEC CHECKSUMS:
   ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
@@ -164,7 +167,8 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   SDWebImage: 1c39de67663e5eebb2f41324d5d580eeea12dd4c
+  SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
 
-PODFILE CHECKSUM: 8744926bd981cae235b1108382107d82bdbd9cb5
+PODFILE CHECKSUM: 970d11b3f07ad0b8b568adc88a3c17d3559f4fdd
 
 COCOAPODS: 1.11.3

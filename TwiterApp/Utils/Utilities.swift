@@ -31,6 +31,28 @@ class Utilities {
         return view
     }
     
+    func menuOptionView(withImage image: UIImage, text: String) -> UIView {
+        let view = UIView()
+        let iv = UIImageView()
+        let label = UILabel()
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        iv.image = image
+        view.addSubview(iv)
+        iv.anchor(left: view.leftAnchor, paddingLeft: 8)
+        iv.setDimensions(width: 24, height: 24)
+        iv.centerY(inView: view)
+        
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .white
+        view.addSubview(label)
+        label.anchor(left: iv.rightAnchor,paddingLeft: 18)
+        label.centerY(inView: view)
+        
+        return view
+    }
+    
     
     func textField(withPlaceholder placeholder: String) -> UITextField {
         let tf = UITextField()

@@ -24,6 +24,15 @@ struct AuthService {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
     
+    func logUserOut(completion: @escaping() -> Void) {
+        do {
+            try Auth.auth().signOut()
+            completion()
+        } catch let signOutError as NSError{
+            print("DEBUG: Error occured when signing out -> %@", signOutError)
+        }
+    }
+    
     func registerUser(credential: AuthCredentials , completion: @escaping(Error?, DatabaseReference) -> Void) {
         let email = credential.email
         let password = credential.password

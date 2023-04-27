@@ -21,6 +21,7 @@ pod 'FirebaseStorage'
 pod 'FirebaseMessaging'
 pod 'SDWebImage', '~> 5.0'
 pod 'ActiveLabel'
+pod 'SideMenu'
 
 
 end
