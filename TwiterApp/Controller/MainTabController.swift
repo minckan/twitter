@@ -8,6 +8,37 @@
 import UIKit
 import FirebaseAuth
 
+
+enum TapButtons: Int,CaseIterable  {
+    case feed
+    case explore
+    case notification
+    case message
+    
+    
+    var description : String {
+        switch self {
+        case .feed: return "Feed"
+        case .explore: return "Explore"
+        case .notification: return "Notification"
+        case .message: return "Message"
+        }
+    }
+    var controller : UIViewController {
+        switch self {
+            
+        case .feed:
+            return FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        case .explore:
+            return ExploreController()
+        case .notification:
+            return NotificationController()
+        case .message:
+            return ConversationsController()
+        }
+    }
+}
+
 class MainTabController: UITabBarController {
     
     // MARK: - Properties
@@ -19,6 +50,8 @@ class MainTabController: UITabBarController {
             feed.user = user
         }
     }
+    
+    private var selectedTap:TapButtons?
     
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
@@ -63,9 +96,15 @@ class MainTabController: UITabBarController {
     // MARK: - Selectors
     @objc func ActionButtonTabbed() {
         guard let user = user else {return}
-        let controller = UploadTweetsController(user: user, config: .tweet)
-       let nav = UINavigationController(rootViewController: controller)
+        var controller:UIViewController = UploadTweetsController(user: user, config: .tweet)
+        var nav = UINavigationController(rootViewController: controller)
+
+        if self.selectedTap == .message {
+            controller = ExploreController()
+            nav = UINavigationController(rootViewController: controller)
+        }
         nav.modalPresentationStyle = .fullScreen
+        
         present(nav, animated: true)
     }
     
@@ -80,25 +119,23 @@ class MainTabController: UITabBarController {
     func configureViewControllers() {
         delegate = self
         
-        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-        let nav1 = templateNavigationController(image: UIImage(named: "home_unselected"), rootViewController: feed)
+        let nav1 = templateNavigationController(image: UIImage(named: "home_unselected"), option: TapButtons.feed)
         
-        let explore = ExploreController()
-        let nav2 = templateNavigationController(image: UIImage(named: "search_unselected"), rootViewController: explore)
+        let nav2 = templateNavigationController(image: UIImage(named: "search_unselected"), option: TapButtons.explore)
         
-        let notification = NotificationController()
-        let nav3 = templateNavigationController(image: UIImage(named: "like_unselected"), rootViewController: notification)
+        let nav3 = templateNavigationController(image: UIImage(named: "like_unselected"), option: TapButtons.notification)
         
-        let conversations = ConversationsController()
-        let nav4 = templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1"), rootViewController: conversations)
+        let nav4 = templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1"), option: TapButtons.message)
         
         
         viewControllers = [nav1, nav2, nav3, nav4]
     }
     
-    func templateNavigationController(image: UIImage?, rootViewController: UIViewController) -> UINavigationController {
-        let nav = UINavigationController(rootViewController: rootViewController)
+    func templateNavigationController(image: UIImage?, option: TapButtons) -> UINavigationController {
+        let nav = UINavigationController(rootViewController: option.controller)
         nav.tabBarItem.image = image
+        nav.tabBarItem.tag = option.rawValue
+        
         setNavigationBarColor(color: .white)
         return nav
     }
@@ -111,6 +148,15 @@ extension MainTabController: UITabBarControllerDelegate {
      */
     func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return TabBarAnimatedTransitioning()
+    }
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        guard let tap = TapButtons(rawValue: item.tag) else {return}
+        self.selectedTap = tap
+        if self.selectedTap == .message {
+            actionButton.setImage(UIImage(named: "ic_mail_outline_white_2x-1"), for: .normal)
+        } else {
+            actionButton.setImage(UIImage(named: "new_tweet"), for: .normal)
+        }
     }
 }
 

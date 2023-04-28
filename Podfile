@@ -15,10 +15,7 @@ pod 'FirebaseAnalytics', '~> 10.5.0'
 
 # Add the pods for any other Firebase products you want to use in your app
 # For example, to use Firebase Authentication and Cloud Firestore
-pod 'FirebaseAuth'
-pod 'FirebaseDatabase'
-pod 'FirebaseStorage'
-pod 'FirebaseMessaging'
+
 pod 'SDWebImage', '~> 5.0'
 pod 'ActiveLabel'
 pod 'SideMenu'

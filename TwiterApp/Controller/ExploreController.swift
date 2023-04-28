@@ -17,6 +17,8 @@ class ExploreController: UITableViewController {
         }
     }
     
+    private var isSendMsg: Bool? = false
+    
     private var filteredUser = [User]() {
         didSet {tableView.reloadData()}
     }
@@ -35,11 +37,23 @@ class ExploreController: UITableViewController {
         configureSearchController()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        
+        if self.presentingViewController != nil {
+            isSendMsg = true
+            navigationItem.title = "New Message"
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
+        } else {
+            isSendMsg = false
+            navigationItem.title = "Explore"
+        }
     }
     
+
+
     
     // MARK: - API
     
@@ -49,15 +63,18 @@ class ExploreController: UITableViewController {
         }
     }
     
+    // MARK: - Selectors
+    @objc func handleCancel() {
+        dismiss(animated: true)
+    }
+    
     // MARK: - Helpers
     func configureUI() {
         view.backgroundColor = .white
-        navigationItem.title = "Explore"
         tableView.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 60
         tableView.separatorStyle = .none
-        
-        
+      
     }
     
     func configureSearchController() {
@@ -83,8 +100,12 @@ extension ExploreController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let channelFirestoreStream = ChannelFirestoreStream()
+        let channel = channelFirestoreStream.createChannel(with: "")
+        
         let user = inSearchMode ? filteredUser[indexPath.row] :users[indexPath.row]
-        let controller = ProfileController(user: user)
+        let controller = isSendMsg! ? ChatController(channel: channel) : ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
     }
 }
