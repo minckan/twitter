@@ -19,6 +19,9 @@
 		8C53624929FA3A6600C39902 /* SideMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C53624829FA3A6600C39902 /* SideMenuHeader.swift */; };
 		8C53624B29FA3AD000C39902 /* SideMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C53624A29FA3AD000C39902 /* SideMenuCell.swift */; };
 		8C53624F29FA48B400C39902 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C53624E29FA48B300C39902 /* ProfileHeaderViewModel.swift */; };
+		8C5C12052A00CD0800925A70 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5C12042A00CD0800925A70 /* ChatViewModel.swift */; };
+		8C5C12072A00D5AC00925A70 /* FirebaseStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5C12062A00D5AC00925A70 /* FirebaseStorageManager.swift */; };
+		8C5C12092A00D82500925A70 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5C12082A00D82500925A70 /* UserDefaultManager.swift */; };
 		8C73C83129DD5298007783BF /* UploadTweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C73C83029DD5298007783BF /* UploadTweetViewModel.swift */; };
 		8C74BE5929F270730068FB4C /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C74BE5829F270730068FB4C /* EditProfileController.swift */; };
 		8C74BE5C29F2778C0068FB4C /* EditProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C74BE5B29F2778C0068FB4C /* EditProfileHeader.swift */; };
@@ -107,6 +110,9 @@
 		8C53624A29FA3AD000C39902 /* SideMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuCell.swift; sourceTree = "<group>"; };
 		8C53624E29FA48B300C39902 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
 		8C55F04A29E93F970070B7B7 /* TwiterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwiterApp.entitlements; sourceTree = "<group>"; };
+		8C5C12042A00CD0800925A70 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		8C5C12062A00D5AC00925A70 /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
+		8C5C12082A00D82500925A70 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		8C73C83029DD5298007783BF /* UploadTweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetViewModel.swift; sourceTree = "<group>"; };
 		8C74BE5829F270730068FB4C /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		8C74BE5B29F2778C0068FB4C /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
@@ -319,6 +325,8 @@
 				FE320A0729AC9522004571A9 /* Utilities.swift */,
 				FE320A0B29ADDA88004571A9 /* Constant.swift */,
 				8CB616D029DE52F300F2A268 /* ActionSheetLauncher.swift */,
+				8C5C12062A00D5AC00925A70 /* FirebaseStorageManager.swift */,
+				8C5C12082A00D82500925A70 /* UserDefaultManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -363,6 +371,7 @@
 				8C53624E29FA48B300C39902 /* ProfileHeaderViewModel.swift */,
 				8C3284ED29DFB5D40058BB27 /* ActionSheetViewModel.swift */,
 				8CDB08C629E67451004A42D1 /* NotificationViewModel.swift */,
+				8C5C12042A00CD0800925A70 /* ChatViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -616,6 +625,7 @@
 				FE5224AC29A432A200AD6028 /* RegistrationController.swift in Sources */,
 				FE9FC79329C9F86C0093775B /* TweetController.swift in Sources */,
 				8C74BE6029F27C710068FB4C /* EditProfileViewModel.swift in Sources */,
+				8C5C12092A00D82500925A70 /* UserDefaultManager.swift in Sources */,
 				FE9717492998C49F00C4C4E1 /* MainTabController.swift in Sources */,
 				FE79595F29C897E30088B829 /* UserCell.swift in Sources */,
 				8C53624F29FA48B400C39902 /* ProfileHeaderViewModel.swift in Sources */,
@@ -623,6 +633,7 @@
 				FE9C797829C3647C0076DFB9 /* TweetCell.swift in Sources */,
 				FE97174B2998C71100C4C4E1 /* FeedController.swift in Sources */,
 				FE2D874E29AE279E00818050 /* UserService.swift in Sources */,
+				8C5C12072A00D5AC00925A70 /* FirebaseStorageManager.swift in Sources */,
 				FE9717512998C78100C4C4E1 /* ConversationController.swift in Sources */,
 				8C73C83129DD5298007783BF /* UploadTweetViewModel.swift in Sources */,
 				8C53624929FA3A6600C39902 /* SideMenuHeader.swift in Sources */,
@@ -636,6 +647,7 @@
 				8CCDBD5729FB594E005E87D4 /* Message.swift in Sources */,
 				8CCDBD6729FBAF17005E87D4 /* DatabaseRepresentation.swift in Sources */,
 				8CDB08C729E67451004A42D1 /* NotificationViewModel.swift in Sources */,
+				8C5C12052A00CD0800925A70 /* ChatViewModel.swift in Sources */,
 				8C53624B29FA3AD000C39902 /* SideMenuCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

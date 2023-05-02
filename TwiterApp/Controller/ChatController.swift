@@ -8,6 +8,9 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
+import FirebaseFirestore
+import FirebaseAuth
+import Photos
 
 class ChatController : MessagesViewController {
     // MARK: - Properties
@@ -19,14 +22,37 @@ class ChatController : MessagesViewController {
         return button
     }()
     
+    let receiverId: String
     
-    let channel: Channel
-    var sender = Sender(senderId: "any_unique_id", displayName: "MJ")
+    private var user: User? {
+        didSet {
+            configure()
+            confirmDelegate()
+            listenToMessages()
+            setupMessageInputBar()
+            removeOutgoingMessageAvatars()
+            addCamerabarButtonToMessageInputBar()
+        }
+    }
+    var channel: Channel
+    let chatFirestoreStream = ChatFirestoreStream()
     var messages = [Message]()
     
+    private var isSendingPhoto = false {
+         didSet {
+           messageInputBar.leftStackViewItems.forEach { item in
+             guard let item = item as? InputBarButtonItem else {
+               return
+             }
+             item.isEnabled = !self.isSendingPhoto
+           }
+         }
+       }
+    
     // MARK: - Lifecycle
-    init(channel: Channel) {
+    init(uid: String, channel: Channel) {
         self.channel = channel
+        self.receiverId = uid
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,12 +62,20 @@ class ChatController : MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        fetchUser()
     }
+    
+    
     
     deinit {
 //        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    // MARK: - API
+    func fetchUser() {
+        UserService.shared.fetchUser(uid: receiverId) { user in
+            self.user = user
+        }
     }
     // MARK: - Selectors
     @objc func didTapCameraButton() {
@@ -49,6 +83,7 @@ class ChatController : MessagesViewController {
     }
     
     // MARK: - Helpers
+
     private func confirmDelegate() {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -57,8 +92,8 @@ class ChatController : MessagesViewController {
         messageInputBar.delegate = self
     }
     
-    private func configure() {
-        title = channel.name
+    func configure() {
+        title = channel.receiverName
         navigationController?.navigationBar.prefersLargeTitles = false
 //        messages = MessageService.shared.fetchMessages()
     }
@@ -83,18 +118,57 @@ class ChatController : MessagesViewController {
         messageInputBar.setStackViewItems([cameraBarButtonItem], forStack: .left, animated: false)
     }
     
+    
+    
     private func insertNewMessage(_ message: Message) {
         messages.append(message)
         messages.sort()
+        channel.latestMessage = message.content
         
         messagesCollectionView.reloadData()
     }
+    
+    private func listenToMessages() {
+       
+        guard let id = channel.id else {
+            return
+        }
+        
+        
 
+        chatFirestoreStream.subscribe(id: id) { [weak self] result in
+            switch result {
+            case .success(let messages):
+                self?.loadImageAndUpdateCells(messages)
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    
+    
+    private func loadImageAndUpdateCells(_ messages: [Message]) {
+            messages.forEach { message in
+                var message = message
+                if let url = message.downloadURL {
+                    FirebaseStorageManager.downloadImage(url: url) { [weak self] image in
+                        guard let image = image else { return }
+                        message.image = image
+                        self?.insertNewMessage(message)
+                    }
+                } else {
+                    insertNewMessage(message)
+                }
+            }
+        }
+    
 }
 
 extension ChatController: MessagesDataSource {
     var currentSender: MessageKit.SenderType {
-        return sender
+        return Sender(senderId: Auth.auth().currentUser?.uid ?? "", displayName: UserDefaultManager.displayName)
     }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) -> MessageKit.MessageType {
@@ -137,9 +211,55 @@ extension ChatController : MessagesDisplayDelegate {
     }
 }
 
-extension ChatController : InputBarAccessoryViewDelegate {
+extension ChatController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(withContent: text)
+        guard let user = user else {return}
+        let message = Message(user: user, withContent: text)
         
+        chatFirestoreStream.save(message) { [weak self] error in
+            if let error = error {
+                print("DEBUG: error occurd -> \(error.localizedDescription)")
+                return
+            }
+            self?.messagesCollectionView.scrollToLastItem()
+        }
+        inputBar.inputTextView.text.removeAll()
     }
 }
+
+extension ChatController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        
+        if let asset = info[.phAsset] as? PHAsset {
+            let imageSize = CGSize(width: 500, height: 500)
+            PHImageManager.default().requestImage(for: asset,
+                                                     targetSize: imageSize,
+                                                     contentMode: .aspectFit,
+                                                     options: nil) { image, _ in
+                guard let image = image else { return }
+                self.sendPhoto(image)
+            }
+        } else if let image = info[.originalImage] as? UIImage {
+            sendPhoto(image)
+        }
+    }
+    
+    private func sendPhoto(_ image: UIImage) {
+        isSendingPhoto = true
+        FirebaseStorageManager.uploadImage(image: image, channel: channel) { [weak self] url in
+            self?.isSendingPhoto = false
+            guard let user = self?.user, let url = url else { return }
+            
+            var message = Message(user: user, withImage: image)
+            message.downloadURL = url
+            self?.chatFirestoreStream.save(message)
+            self?.messagesCollectionView.scrollToLastItem()
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+}
+

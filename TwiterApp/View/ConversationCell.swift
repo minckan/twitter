@@ -12,7 +12,6 @@ class ConversationCell : UITableViewCell {
     var channel : Channel? {
         didSet {
             configure()
-            print("DEBUG: \(channel?.name)")
         }
     }
     
@@ -26,7 +25,7 @@ class ConversationCell : UITableViewCell {
         return iv
     }()
     
-    private let usernameLabel: UILabel = {
+    private var usernameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.text = "Username"
@@ -40,7 +39,7 @@ class ConversationCell : UITableViewCell {
         return label
     }()
     
-    private let timeLabel: UILabel = {
+    private var timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.text = "02:30 PM"
@@ -73,7 +72,12 @@ class ConversationCell : UITableViewCell {
     
     // MARK: - Helpers
     func configure() {
+        guard let channel = channel else {return}
         
+        let viewModel = ChatViewModel(channel: channel)
+        usernameLabel.text = channel.receiverName as? String ?? ""
+        timeLabel.text = viewModel.timestamp
+      
     }
     
 }

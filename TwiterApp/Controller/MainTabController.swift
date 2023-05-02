@@ -39,6 +39,7 @@ enum TapButtons: Int,CaseIterable  {
     }
 }
 
+
 class MainTabController: UITabBarController {
     
     // MARK: - Properties
@@ -48,6 +49,8 @@ class MainTabController: UITabBarController {
             guard let feed = nav.viewControllers.first as? FeedController else {return}
             
             feed.user = user
+            
+            UserDefaultManager.displayName = user?.username ?? ""
         }
     }
     
@@ -147,8 +150,16 @@ extension MainTabController: UITabBarControllerDelegate {
      ref: https://developer.apple.com/documentation/uikit/uitabbarcontrollerdelegate/1621167-tabbarcontroller
      */
     func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
         return TabBarAnimatedTransitioning()
     }
+  
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let navController = viewController as? UINavigationController {
+            navController.delegate = self
+        }
+    }
+    
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         guard let tap = TapButtons(rawValue: item.tag) else {return}
         self.selectedTap = tap
@@ -191,6 +202,16 @@ final class TabBarAnimatedTransitioning: NSObject, UIViewControllerAnimatedTrans
                 fromView.removeFromSuperview()
                 transitionContext.completeTransition(true)
             })
+        }
+    }
+}
+
+extension MainTabController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if let VC = viewController as? ChatController {
+            actionButton.isHidden = true
+        } else {
+            actionButton.isHidden = false
         }
     }
 }

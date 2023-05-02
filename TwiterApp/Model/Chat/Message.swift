@@ -9,6 +9,7 @@ import Foundation
 import MessageKit
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 struct Sender: SenderType, Equatable {
     var senderId: String
@@ -34,15 +35,15 @@ struct Message: MessageType {
     var image : UIImage?
     var downloadURL: URL?
     
-    init(withContent content: String) {
-        sender = Sender(senderId: "id", displayName: "displayNmae")
+    init(user: User, withContent content: String) {
+        sender = Sender(senderId: Auth.auth().currentUser?.uid ?? "", displayName: UserDefaultManager.displayName)
         self.content = content
         sentDate = Date()
         id = nil
     }
     
-    init(withImage image: UIImage) {
-        sender = Sender(senderId: "id", displayName: "displayNmae")
+    init(user: User, withImage image: UIImage) {
+        sender = Sender(senderId: Auth.auth().currentUser?.uid ?? "", displayName: UserDefaultManager.displayName)
         self.image = image
         sentDate = Date()
         content = ""

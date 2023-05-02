@@ -101,12 +101,23 @@ extension ExploreController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let channelFirestoreStream = ChannelFirestoreStream()
-        let channel = channelFirestoreStream.createChannel(with: "")
         
-        let user = inSearchMode ? filteredUser[indexPath.row] :users[indexPath.row]
-        let controller = isSendMsg! ? ChatController(channel: channel) : ProfileController(user: user)
+        let user = !isSendMsg! && inSearchMode ? filteredUser[indexPath.row] :users[indexPath.row]
+        var controller  = UIViewController()
+        
+        if isSendMsg! {
+            let channelFirestoreStream = ChannelFirestoreStream()
+            var dictionary : [String: Any] = [:]
+            dictionary["timestamp"] = Int(NSDate().timeIntervalSince1970)
+//            let channel = Channel(user: user, dictionary: dictionary)
+            let channel = channelFirestoreStream.createChannel(to: user)
+            controller = ChatController(uid: channel.receiverId ?? "", channel: channel)
+        } else {
+            controller = ProfileController(user: user)
+        }
+        
         navigationController?.pushViewController(controller, animated: true)
+        
     }
 }
 // MARK: - UISearchResultsUpdating

@@ -12,17 +12,22 @@ private let reuseIdentifier = "ConversationCell"
 
 class ConversationsController: UITableViewController {
     // MARK: - Properties
-    var channels = [Channel]()
+    var channels = [Channel]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     private let channelStream = ChannelFirestoreStream()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        channelStream.removeCache()
         tableView.register(ConversationCell.self, forCellReuseIdentifier: reuseIdentifier)
         configureUI()
         setupListener()
+       
     }
     
     
@@ -36,11 +41,12 @@ class ConversationsController: UITableViewController {
     }
     
     private func setupListener() {
+
         channelStream.subscribe { [weak self] result in
-          
+
             switch result {
             case .success(let data):
-                print("DEBUG: success - \(data)")
+
                 self?.updateCell(to: data)
             case .failure(let error):
                 print("DEBUG: error - \(error)")
@@ -62,13 +68,16 @@ class ConversationsController: UITableViewController {
     }
     
     private func addChannelToTable(_ channel: Channel) {
+        
         guard channels.contains(channel) == false else {return}
+        tableView.beginUpdates()
         
         channels.append(channel)
         channels.sort()
         
         guard let index = channels.firstIndex(of: channel) else {return}
         tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        tableView.endUpdates()
     }
     
     private func updateChannelInTable(_ channel: Channel) {
@@ -96,7 +105,11 @@ extension ConversationsController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let channel = channels[indexPath.row]
-        let controller = ChatController(channel: channel)
-        navigationController?.pushViewController(controller, animated: true)
+        
+        UserService.shared.fetchUser(uid: channel.receiverId!) { user in
+            let controller = ChatController(uid: channel.receiverId ?? "", channel: channel)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+       
     }
 }
